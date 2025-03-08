@@ -18,8 +18,13 @@ const AddLocationScreen = ({ navigation }) => {
   const { user } = useContext(AuthContext);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [rating, setRating] = useState(0);  // Single rating state for star rating
-  
+  const [rating, setRating] = useState(0);
+  const clearInputs = () => {
+    setName("");
+    setDescription("");
+    setRating(0);
+    Keyboard.dismiss();
+  };
   const handleAddLocation = async () => {
     if (!name || !description || !rating) {
       Alert.alert("Error", "Please fill all fields");
@@ -36,26 +41,21 @@ const AddLocationScreen = ({ navigation }) => {
         latitude: 0,
         longitude: 0
       });
-  // Clear all input fields
-  setName("");
-  setDescription("");
-  setRating(0);
-  Keyboard.dismiss();
-  Alert.alert(
-    "Success", 
-    "Location added successfully!", 
-    [
-      {
-        text: "OK",
-        onPress: () => navigation.navigate("Locations")
-      }
-    ]
-  );
-} catch (error) {
-  Alert.alert("Error", error.message);
-}
+      clearInputs();  // Clear all inputs after successful save
+      Alert.alert(
+        "Success", 
+        "Location added successfully!", 
+        [
+          {
+            text: "OK",
+            onPress: () => navigation.navigate("Locations")
+          }
+        ]
+      );
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    }
   };
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>

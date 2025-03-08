@@ -47,10 +47,45 @@ const CountryScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  input: { borderWidth: 1, padding: 10, marginBottom: 10 },
-  item: { flexDirection: "row", alignItems: "center", padding: 10, borderBottomWidth: 1 },
-  flag: { width: 50, height: 30, marginRight: 10 }
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: '#fff'
+  },
+  searchInput: {
+    height: 50,  // Increased height
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+    fontSize: 16  // Larger font size
+  },
+  countryItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,  // Increased padding
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+    marginBottom: 10  // Added margin between items
+  },
+  countryInfo: {
+    flex: 1,
+    marginLeft: 15
+  },
+  countryName: {
+    fontSize: 18,  // Larger font size
+    fontWeight: 'bold',
+    marginBottom: 8
+  },
+  capitalName: {
+    fontSize: 16,  // Larger font size
+    color: '#666'
+  },
+  flag: {
+    width: 60,  // Larger flag
+    height: 40,  // Larger flag
+    marginRight: 10
+  }
 });
-
 export default CountryScreen;

@@ -18,7 +18,14 @@ const LocationsScreen = ({ navigation }) => {
   }, [user]);
 
   const handleLocationPress = (location) => {
-    navigation.navigate('Map', { location });
+    navigation.navigate('Map', { 
+      location: {
+        latitude: location.latitude,
+        longitude: location.longitude,
+        name: location.name,
+        description: location.description
+      }
+    });
   };
   return (
     <View style={styles.container}>
