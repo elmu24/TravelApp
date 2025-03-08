@@ -1,14 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import React from "react";
+import { AuthProvider } from "./context/AuthContext";
+import AppNavigator from "./navigation/AppNavigator"; // Fix capitalization
 
-export default function App() {
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <AuthProvider>
+      <AppNavigator />
       <StatusBar style="auto" />
-    </View>
+    </AuthProvider>
   );
-}
+};
+
+export default App;
 
 const styles = StyleSheet.create({
   container: {
