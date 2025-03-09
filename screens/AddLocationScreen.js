@@ -14,6 +14,7 @@ import { AuthContext } from "../context/AuthContext";
 import { db } from "../services/firebaseConfig";
 import RatingStars from "../components/RatingStars";
 import FirestoreController from '../services/FirestoreController';
+import StyledButton from '../components/StyledButton';
 
 const AddLocationScreen = ({ navigation }) => {
   const { user } = useContext(AuthContext);
@@ -76,7 +77,10 @@ const AddLocationScreen = ({ navigation }) => {
           rating={rating} 
           onRatingChange={setRating}
         />
-        <Button title="Add Location" onPress={handleAddLocation} />
+        <StyledButton 
+          title="Add Location" 
+          onPress={handleAddLocation}  // Changed from handleSubmit to handleAddLocation
+        />
       </View>
     </TouchableWithoutFeedback>
   );

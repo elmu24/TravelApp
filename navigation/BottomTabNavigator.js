@@ -11,32 +11,61 @@ const Tab = createBottomTabNavigator();
 const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
-
-          if (route.name === 'Locations') {
-            iconName = focused ? 'list' : 'list-outline';
-          } else if (route.name === 'Add Location') {
-            iconName = focused ? 'add-circle' : 'add-circle-outline';
-          } else if (route.name === 'Map') {
-            iconName = focused ? 'map' : 'map-outline';
-          } else if (route.name === 'Countries') {
-            iconName = focused ? 'earth' : 'earth-outline';
-          }
-
-          return <Ionicons name={iconName} size={size} color={color} />;
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: '#8A9FD4',
         },
-      })}
+        tabBarActiveTintColor: '#fff',
+        tabBarInactiveTintColor: 'rgba(255, 255, 255, 0.6)',
+        headerStyle: {
+          backgroundColor: '#A5B5E0',
+        },
+        headerTintColor: '#fff',
+        cardStyle: {
+          backgroundColor: '#fff',
+        },
+        contentStyle: {
+          color: '#333', // Default dark gray color for content text
+        }
+      }}
     >
-      <Tab.Screen name="Locations" component={LocationsScreen} />
-      <Tab.Screen name="Add Location" component={AddLocationScreen} />
+      <Tab.Screen 
+        name="Locations" 
+        component={LocationsScreen}
+        options={{
+          tabBarIcon: ({ focused, color }) => (
+            <Ionicons name={focused ? 'list' : 'list-outline'} size={24} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen 
+        name="Add Location" 
+        component={AddLocationScreen}
+        options={{
+          tabBarIcon: ({ focused, color }) => (
+            <Ionicons name={focused ? 'add-circle' : 'add-circle-outline'} size={24} color={color} />
+          ),
+        }}
+      />
       <Tab.Screen 
         name="Map" 
         component={MapScreen}
         initialParams={{ location: null }}
+        options={{
+          tabBarIcon: ({ focused, color }) => (
+            <Ionicons name={focused ? 'map' : 'map-outline'} size={24} color={color} />
+          ),
+        }}
       />
-      <Tab.Screen name="Countries" component={CountryScreen} />
+      <Tab.Screen 
+        name="Countries" 
+        component={CountryScreen}
+        options={{
+          tabBarIcon: ({ focused, color }) => (
+            <Ionicons name={focused ? 'earth' : 'earth-outline'} size={24} color={color} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };

@@ -14,7 +14,17 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#8A9FD4', // Light blue-purple color
+          },
+          headerTintColor: '#fff', // White text
+          headerTitleStyle: {
+            color: '#fff',
+          },
+        }}
+      >
         {!user ? (
           <Stack.Screen name="Login" component={LoginScreen} />
         ) : (
@@ -27,7 +37,7 @@ const AppNavigator = () => {
                   onPress={logout}
                   style={{ marginRight: 15 }}
                 >
-                  <Ionicons name="log-out-outline" size={24} color="black" />
+                  <Ionicons name="log-out-outline" size={24} color="white" />
                 </Pressable>
               )
             }}
