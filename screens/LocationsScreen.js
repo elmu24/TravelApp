@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 import FirestoreController from '../services/FirestoreController';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const LocationsScreen = ({ navigation }) => {
   const { user } = useContext(AuthContext);
@@ -41,7 +42,28 @@ const LocationsScreen = ({ navigation }) => {
       }
     });
   };
-  
+
+  const handleDelete = async (itemId) => {
+    Alert.alert(
+      "Delete Location",
+      "Are you sure you want to delete this location?",
+      [
+        { text: "Cancel", style: "cancel" },
+        { 
+          text: "Delete", 
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await FirestoreController.deleteLocation(itemId);
+            } catch (error) {
+              Alert.alert("Error", "Failed to delete location");
+            }
+          }
+        }
+      ]
+    );
+  };
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -57,9 +79,17 @@ const LocationsScreen = ({ navigation }) => {
               <Text style={styles.locationDescription}>{item.description}</Text>
               <View style={styles.locationFooter}>
                 <Text style={styles.rating}>Rating: {item.rating}/5</Text>
-                <Text style={styles.date}>
-                  {new Date(item.createdAt).toLocaleDateString()}
-                </Text>
+                <View style={styles.footerRight}>
+                  <Text style={styles.date}>
+                    {new Date(item.createdAt).toLocaleDateString()}
+                  </Text>
+                  <TouchableOpacity 
+                    onPress={() => handleDelete(item.id)}
+                    style={styles.deleteButton}
+                  >
+                    <MaterialIcons name="delete" size={24} color="#FF3B30" />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </TouchableOpacity>
@@ -69,6 +99,7 @@ const LocationsScreen = ({ navigation }) => {
   );
 };
 
+// Add these new styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -123,6 +154,14 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 14,
     color: '#888'
+  },
+  footerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10
+  },
+  deleteButton: {
+    padding: 5
   }
 });
 
