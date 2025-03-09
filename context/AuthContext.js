@@ -26,6 +26,8 @@ export const AuthProvider = ({ children }) => {
     });
     return unsubscribe;
   }, []);
+
+  // Retrieving stored user data  and restores session
   useEffect(() => {
     const loadUser = async () => {
       try {
@@ -37,8 +39,11 @@ export const AuthProvider = ({ children }) => {
         console.error('Error loading user:', error);
       }
     };
+    // calling the function
     loadUser();
   }, []);
+
+  // Login function w. asynch storage
   const login = async (email, password) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -48,10 +53,14 @@ export const AuthProvider = ({ children }) => {
       throw error;
     }
   };
+
+  // Logout function
   const logout = async () => {
+    // Remove stored user data 
     await signOut(auth);
   };
 
+  // Provide authentication state and functions -> for child components
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
       {children}
