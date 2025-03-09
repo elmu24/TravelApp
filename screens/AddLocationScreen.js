@@ -26,6 +26,7 @@ const AddLocationScreen = ({ navigation }) => {
     setRating(0);
     Keyboard.dismiss();
   };
+
   // In your handleAddLocation function:
   const handleAddLocation = async () => {
     if (!name || !description || !rating) {
@@ -37,8 +38,6 @@ const AddLocationScreen = ({ navigation }) => {
       name,
       description,
       rating,
-      latitude: 0,
-      longitude: 0,
       userEmail: user.email
     };
   

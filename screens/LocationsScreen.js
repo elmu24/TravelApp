@@ -3,6 +3,7 @@ import { View, FlatList, Text, TouchableOpacity, StyleSheet, Button } from "reac
 import { collection, query, where, onSnapshot, orderBy } from "firebase/firestore";
 import { AuthContext } from "../context/AuthContext";
 import { db } from "../services/firebaseConfig";
+import FirestoreController from '../services/FirestoreController';
 
 const LocationsScreen = ({ navigation }) => {
   const { user } = useContext(AuthContext);
@@ -11,18 +12,11 @@ const LocationsScreen = ({ navigation }) => {
   useEffect(() => {
     if (!user) return;
     
-    const q = query(
-      collection(db, "locations"), 
-      where("userId", "==", user.uid),
-      orderBy("createdAt", "desc")  // Show newest locations first
+    const unsubscribe = FirestoreController.subscribeToUserLocations(
+      user.uid,
+      (locations) => setLocations(locations)
     );
     
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      setLocations(snapshot.docs.map(doc => ({ 
-        id: doc.id, 
-        ...doc.data() 
-      })));
-    });
     return () => unsubscribe();
   }, [user]);
   

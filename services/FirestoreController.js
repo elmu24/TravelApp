@@ -2,7 +2,6 @@ import { collection, addDoc, query, where, onSnapshot, orderBy } from 'firebase/
 import { db } from '../services/firebaseConfig';
 
 class FirestoreController {
-  // Add a new location
   static async addLocation(userId, locationData) {
     try {
       const docRef = await addDoc(collection(db, "locations"), {
@@ -12,25 +11,38 @@ class FirestoreController {
       });
       return { success: true, id: docRef.id };
     } catch (error) {
+      console.error("Error adding location:", error);
       return { success: false, error: error.message };
     }
   }
 
-  // Get locations for a specific user
-  static subscribeToUserLocations(userId, callback) {
-    const q = query(
-      collection(db, "locations"),
-      where("userId", "==", userId),
-      orderBy("createdAt", "desc")
-    );
+  static subscribeToUserLocations(userId, callback, onError) {
+    try {
+      const q = query(
+        collection(db, "locations"),
+        where("userId", "==", userId),
+        orderBy("createdAt", "desc")
+      );
 
-    return onSnapshot(q, (snapshot) => {
-      const locations = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      callback(locations);
-    });
+      return onSnapshot(q, 
+        (snapshot) => {
+          const locations = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }));
+          callback(locations);
+        },
+        (error) => {
+          console.error("Locations subscription error:", error);
+          if (onError) onError(error);
+          callback([]);
+        }
+      );
+    } catch (error) {
+      console.error("Error setting up subscription:", error);
+      if (onError) onError(error);
+      return () => {};
+    }
   }
 }
 
