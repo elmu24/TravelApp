@@ -4,12 +4,15 @@ import LocationsScreen from "../screens/LocationsScreen";
 import AddLocationScreen from "../screens/AddLocationScreen";
 import MapScreen from "../screens/MapScreen";
 import CountryScreen from "../screens/CountryScreen";
-import { Ionicons } from '@expo/vector-icons';  // 添加分号
+import { Ionicons } from '@expo/vector-icons';  
 
+// Create Component for navigation menu on the bottom
 const Tab = createBottomTabNavigator();
 
+// fill component
 const BottomTabNavigator = () => {
   return (
+    // style of the navigator
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
@@ -25,10 +28,12 @@ const BottomTabNavigator = () => {
           backgroundColor: '#fff',
         },
         contentStyle: {
-          color: '#333', // Default dark gray color for content text
+          color: '#333', 
         }
       }}
     >
+
+      {/* Locations tab with text and icon*/}
       <Tab.Screen 
         name="Locations" 
         component={LocationsScreen}
@@ -38,6 +43,8 @@ const BottomTabNavigator = () => {
           ),
         }}
       />
+
+       {/* Add Locations tab*/}
       <Tab.Screen 
         name="Add Location" 
         component={AddLocationScreen}
@@ -47,6 +54,8 @@ const BottomTabNavigator = () => {
           ),
         }}
       />
+
+       {/* Map tab*/}
       <Tab.Screen 
         name="Map" 
         component={MapScreen}
@@ -57,6 +66,8 @@ const BottomTabNavigator = () => {
           ),
         }}
       />
+
+       {/* Countires tab*/}
       <Tab.Screen 
         name="Countries" 
         component={CountryScreen}
@@ -66,6 +77,7 @@ const BottomTabNavigator = () => {
           ),
         }}
       />
+      
     </Tab.Navigator>
   );
 };
