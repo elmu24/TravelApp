@@ -18,10 +18,10 @@ class FirestoreController {
 
   static subscribeToUserLocations(userId, callback, onError) {
     try {
+      //orderBy
       const q = query(
         collection(db, "locations"),
-        where("userId", "==", userId),
-        orderBy("createdAt", "desc")
+        where("userId", "==", userId)
       );
 
       return onSnapshot(q, 
@@ -30,6 +30,10 @@ class FirestoreController {
             id: doc.id,
             ...doc.data()
           }));
+          // 在 JavaScript 端排序
+          locations.sort((a, b) => 
+            new Date(b.createdAt) - new Date(a.createdAt)
+          );
           callback(locations);
         },
         (error) => {

@@ -1,8 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, FlatList, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
-import { collection, query, where, onSnapshot, orderBy } from "firebase/firestore";
+import { 
+  View, 
+  FlatList, 
+  Text, 
+  TouchableOpacity, 
+  StyleSheet, 
+  Alert,
+  Pressable  // 替换 Button
+} from "react-native";
 import { AuthContext } from "../context/AuthContext";
-import { db } from "../services/firebaseConfig";
 import FirestoreController from '../services/FirestoreController';
 
 const LocationsScreen = ({ navigation }) => {
@@ -11,37 +17,33 @@ const LocationsScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (!user) return;
+
+    const handleError = (error) => {
+      Alert.alert("Error", "Failed to load locations");
+    };
     
     const unsubscribe = FirestoreController.subscribeToUserLocations(
       user.uid,
-      (locations) => setLocations(locations)
+      setLocations,
+      handleError
     );
     
     return () => unsubscribe();
   }, [user]);
-  
+
   const handleLocationPress = (location) => {
-    if (location.latitude && location.longitude) {
-      navigation.navigate('Map', { 
-        location: {
-          latitude: parseFloat(location.latitude),
-          longitude: parseFloat(location.longitude),
-          name: location.name,
-          description: location.description
-        }
-      });
-    } else {
-      Alert.alert("Error", "Location coordinates not available");
-    }
+    navigation.navigate('Map', { 
+      location: {
+        latitude: location.latitude,
+        longitude: location.longitude,
+        name: location.name,
+        description: location.description
+      }
+    });
   };
   
   return (
     <View style={styles.container}>
-      <Button 
-        title="Add New Location" 
-        onPress={() => navigation.navigate('AddLocation')}
-        style={styles.addButton}
-      />
       <FlatList
         data={locations}
         keyExtractor={(item) => item.id}
@@ -74,7 +76,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5'
   },
   addButton: {
-    marginBottom: 16
+    backgroundColor: '#007AFF',
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 16,
+    alignItems: 'center'
+  },
+  addButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold'
   },
   locationItem: {
     backgroundColor: '#fff',
