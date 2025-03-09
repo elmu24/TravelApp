@@ -13,6 +13,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { AuthContext } from "../context/AuthContext";
 import { db } from "../services/firebaseConfig";
 import RatingStars from "../components/RatingStars";
+import FirestoreController from '../services/FirestoreController';
 
 const AddLocationScreen = ({ navigation }) => {
   const { user } = useContext(AuthContext);
@@ -25,35 +26,34 @@ const AddLocationScreen = ({ navigation }) => {
     setRating(0);
     Keyboard.dismiss();
   };
+  // In your handleAddLocation function:
   const handleAddLocation = async () => {
     if (!name || !description || !rating) {
       Alert.alert("Error", "Please fill all fields");
       return;
     }
-
-    try {
-      await addDoc(collection(db, "locations"), {
-        userId: user.uid,
-        name,
-        description,
-        rating: rating,
-        createdAt: new Date().toISOString(),
-        latitude: 0,
-        longitude: 0
-      });
-      clearInputs();  // Clear all inputs after successful save
-      Alert.alert(
-        "Success", 
-        "Location added successfully!", 
-        [
-          {
-            text: "OK",
-            onPress: () => navigation.navigate("Locations")
-          }
-        ]
-      );
-    } catch (error) {
-      Alert.alert("Error", error.message);
+  
+    const locationData = {
+      name,
+      description,
+      rating,
+      latitude: 0,
+      longitude: 0,
+      userEmail: user.email
+    };
+  
+    const result = await FirestoreController.addLocation(user.uid, locationData);
+    
+    if (result.success) {
+      clearInputs();
+      Alert.alert("Success", "Location added successfully!", [
+        {
+          text: "OK",
+          onPress: () => navigation.navigate("Locations")
+        }
+      ]);
+    } else {
+      Alert.alert("Error", result.error);
     }
   };
   return (

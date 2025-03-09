@@ -53,38 +53,38 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   searchInput: {
-    height: 50,  // Increased height
+    height: 50,  
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 8,
     paddingHorizontal: 15,
     marginBottom: 20,
-    fontSize: 16  // Larger font size
+    fontSize: 16  
   },
   countryItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 20,  // Increased padding
+    padding: 20, 
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
-    marginBottom: 10  // Added margin between items
+    marginBottom: 10  
   },
   countryInfo: {
     flex: 1,
     marginLeft: 15
   },
   countryName: {
-    fontSize: 18,  // Larger font size
+    fontSize: 18,  
     fontWeight: 'bold',
     marginBottom: 8
   },
   capitalName: {
-    fontSize: 16,  // Larger font size
+    fontSize: 16,  
     color: '#666'
   },
   flag: {
-    width: 60,  // Larger flag
-    height: 40,  // Larger flag
+    width: 60,  
+    height: 40,  
     marginRight: 10
   }
 });
