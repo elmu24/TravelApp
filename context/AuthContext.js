@@ -3,18 +3,24 @@ import { auth } from "../services/firebaseConfig";
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
+// Creating athcontext to manage auth state globally
 export const AuthContext = createContext();
 
+// Creating Component for auth users 
 export const AuthProvider = ({ children }) => {
+  // State to store authenticated user
   const [user, setUser] = useState(null);
 
+  // Effect Hook: Listen for authentication state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      // Set the user state
       setUser(user);
       if (user) {
+        // Save user data local
         await AsyncStorage.setItem("user", JSON.stringify(user));
       } else {
+        // or remove when logged out
         await AsyncStorage.removeItem("user");
       }
     });
