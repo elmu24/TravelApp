@@ -18,7 +18,6 @@ class FirestoreController {
 
   static subscribeToUserLocations(userId, callback, onError) {
     try {
-      //orderBy
       const q = query(
         collection(db, "locations"),
         where("userId", "==", userId)
@@ -30,10 +29,13 @@ class FirestoreController {
             id: doc.id,
             ...doc.data()
           }));
-          // 在 JavaScript 端排序
-          locations.sort((a, b) => 
-            new Date(b.createdAt) - new Date(a.createdAt)
-          );
+          // Sort by rating (highest first), then by creation date if ratings are equal
+          locations.sort((a, b) => {
+            if (b.rating !== a.rating) {
+              return b.rating - a.rating;
+            }
+            return new Date(b.createdAt) - new Date(a.createdAt);
+          });
           callback(locations);
         },
         (error) => {
