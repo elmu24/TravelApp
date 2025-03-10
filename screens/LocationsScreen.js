@@ -18,9 +18,12 @@ const LocationsScreen = ({ navigation }) => {
   //Storing list of locations
   const [locations, setLocations] = useState([]);
 
+  // Fetch user locations when component mounts or user changes 
   useEffect(() => {
+    // no fetch when user not available + error alert
     if (!user) return;
 
+    // Subscribe to Firestore changes for user locations
     const handleError = (error) => {
       Alert.alert("Error", "Failed to load locations");
     };
@@ -30,10 +33,12 @@ const LocationsScreen = ({ navigation }) => {
       setLocations,
       handleError
     );
-    
+
+    // Cleanup function to unsubscribe when component unmounts
     return () => unsubscribe();
   }, [user]);
 
+   // Function to handle location selection and navigate to map screen
   const handleLocationPress = (location) => {
     navigation.navigate('Map', { 
       location: {
@@ -45,6 +50,7 @@ const LocationsScreen = ({ navigation }) => {
     });
   };
 
+  // Function to handle deletion of a location
   const handleDelete = async (itemId) => {
     Alert.alert(
       "Delete Location",
@@ -56,8 +62,10 @@ const LocationsScreen = ({ navigation }) => {
           style: "destructive",
           onPress: async () => {
             try {
+              // call firestore
               await FirestoreController.deleteLocation(itemId);
             } catch (error) {
+              // show error if failed
               Alert.alert("Error", "Failed to delete location");
             }
           }
@@ -66,6 +74,7 @@ const LocationsScreen = ({ navigation }) => {
     );
   };
 
+  // Layout
   return (
     <View style={styles.container}>
       <FlatList
@@ -101,7 +110,7 @@ const LocationsScreen = ({ navigation }) => {
   );
 };
 
-// Add these new styles
+// Style
 const styles = StyleSheet.create({
   container: {
     flex: 1,

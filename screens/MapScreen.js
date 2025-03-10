@@ -4,10 +4,15 @@ import MapView, { Marker } from "react-native-maps";
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../services/firebaseConfig';
 
+// displaying a map with a selected location marker.
 const MapScreen = ({ route }) => {
+  // storing the selected location
   const [selectedLocation, setSelectedLocation] = useState(null);
+
+  // Retrieve the location passed via navigation route
   const location = route.params?.location;
 
+  // useEffect hook to update selected location state 
   useEffect(() => {
     if (location) {
       setSelectedLocation({
@@ -17,10 +22,13 @@ const MapScreen = ({ route }) => {
         description: location.description
       });
     }
+    // Runs whenever the 'location' prop changes
   }, [location]);
 
+  // Layout
   return (
     <View style={styles.container}>
+      {/* Render MapView component */}
       <MapView
         style={styles.map}
         region={selectedLocation ? {
@@ -35,6 +43,7 @@ const MapScreen = ({ route }) => {
           longitudeDelta: 0.0421,
         }}
       >
+         {/* Render a marker if a location is selected */}
         {selectedLocation && (
           <Marker
             coordinate={{
@@ -53,6 +62,7 @@ const MapScreen = ({ route }) => {
   );
 };
 
+// Style 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
