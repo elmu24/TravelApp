@@ -6,14 +6,16 @@ import {
   TouchableOpacity, 
   StyleSheet, 
   Alert,
-  Pressable  // 替换 Button
+  Pressable,
 } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 import FirestoreController from '../services/FirestoreController';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const LocationsScreen = ({ navigation }) => {
+  // Getting current authenticated user 
   const { user } = useContext(AuthContext);
+  //Storing list of locations
   const [locations, setLocations] = useState([]);
 
   useEffect(() => {

@@ -2,43 +2,60 @@ import React, { useState } from "react";
 import { View, Text, TextInput, FlatList, Image, StyleSheet } from "react-native";
 import axios from "axios";
 
+// search for countries and capitals, fetches data from restcountries.com- API
+// Displays also Capital, Country and flag.
 const CountryScreen = () => {
+  //  State to store user search input
   const [query, setQuery] = useState("");
+  // State to store filtered country results
   const [countries, setCountries] = useState([]);
 
+  // Handles countrysearch
   const searchCountries = async (text) => {
+    // Update query state
     setQuery(text);
     if (text.length < 2) {
+      // Clear results if input is too short
       setCountries([]);
       return;
     }
 
     try {
+      // Fetch countries from the API
       const response = await axios.get(`https://restcountries.com/v3.1/all`);
+       // Filter countries matching the input text 
       const filtered = response.data.filter(country =>
         country.name.common.toLowerCase().includes(text.toLowerCase()) ||
         (country.capital && country.capital[0].toLowerCase().includes(text.toLowerCase()))
       );
+      // Update state with filtered countries
       setCountries(filtered);
     } catch (error) {
-      console.error("Error fetching countries", error);  // Changed from German to English
+      // Log API errors
+      console.error("Error fetching countries", error);  
     }
   };
+
   return (
     <View style={styles.container}>
+      {/* Search input field */}
       <TextInput
         style={styles.input}
         placeholder="Search country or capital..."
         value={query}
-        onChangeText={searchCountries}
+        // Calls search function when text changes
+        onChangeText={searchCountries} 
       />
+
+      {/* Display list of matching countries */}
       <FlatList
         data={countries}
-        keyExtractor={(item) => item.cca3}
+        // Unique country code as key
+        keyExtractor={(item) => item.cca3} 
         renderItem={({ item }) => (
           <View style={styles.item}>
             <Image source={{ uri: item.flags.png }} style={styles.flag} />
-            <Text>{item.name.common} - Capital: {item.capital?.[0]}</Text>  // Changed from "Hauptstadt" to "Capital"
+            <Text>{item.name.common} - Capital: {item.capital?.[0]}</Text>
           </View>
         )}
       />
@@ -46,6 +63,8 @@ const CountryScreen = () => {
   );
 };
 
+
+// Style
 const styles = StyleSheet.create({
   container: {
     flex: 1,
